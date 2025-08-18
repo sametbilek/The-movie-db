@@ -1,0 +1,29 @@
+<div class="movie-detail-container">
+  
+  <div *ngIf="movie; else loading">
+    <a routerLink="/" class="back-link">Ana Sayfaya Dön</a>
+    
+    <div class="detail-header-section">
+      <div class="poster-container">
+        <img *ngIf="movie.poster_path" 
+             [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" 
+             alt="{{ movie.title }} Poster">
+        <div *ngIf="!movie.poster_path" class="no-poster-placeholder">
+          <span>Poster Bulunamadı</span>
+        </div>
+      </div>
+      
+      <div class="info-container">
+        <h1>{{ movie.title }}</h1>
+        <p><strong>Çıkış Tarihi:</strong> {{ movie.release_date }}</p>
+        <p class="overview-title">Özet</p>
+        <p>{{ movie.overview }}</p>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #loading>
+    <p class="loading-text">Film yükleniyor veya bulunamadı...</p>
+  </ng-template>
+  
+</div>

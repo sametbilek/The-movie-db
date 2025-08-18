@@ -8,8 +8,6 @@ public class Movie {
     private Long id;
     private String title;
     private String overview;
-    @JsonProperty("poster_path")
-    private String posterPath;
-    @JsonProperty("release_date")
-    private String releaseDate;
+    private String poster_path;
+    private String release_date;
 }
