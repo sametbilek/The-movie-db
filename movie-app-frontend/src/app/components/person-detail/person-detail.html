@@ -1,0 +1,26 @@
+<div class="person-detail-container">
+    <div *ngIf="person; else loading">
+        <a routerLink="/" class="back-link">Ana Sayfaya Dön</a>
+
+        <div class="person-info-section">
+            <img *ngIf="person.profile_path" 
+                 [src]="'https://image.tmdb.org/t/p/w500' + person.profile_path" 
+                 alt="{{ person.name }} Profil Resmi">
+            <div *ngIf="!person.profile_path" class="no-profile-placeholder">
+                <span>Resim Yok</span>
+            </div>
+
+            <div class="person-details">
+                <h1>{{ person.name }}</h1>
+                <p *ngIf="person.birthday"><strong>Doğum Tarihi:</strong> {{ person.birthday }}</p>
+                <p *ngIf="person.place_of_birth"><strong>Doğum Yeri:</strong> {{ person.place_of_birth }}</p>
+                <p *ngIf="person.biography" class="biography">
+  <strong>Biyografi:</strong> {{ person.biography }}
+</p>
+            </div>
+        </div>
+    </div>
+    <ng-template #loading>
+        <p class="loading-text">Kişi bilgileri yükleniyor...</p>
+    </ng-template>
+</div>

@@ -1,29 +1,47 @@
 <div class="movie-detail-container">
-  
-  <div *ngIf="movie; else loading">
-    <a routerLink="/" class="back-link">Ana Sayfaya Dön</a>
-    
-    <div class="detail-header-section">
-      <div class="poster-container">
-        <img *ngIf="movie.poster_path" 
-             [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" 
-             alt="{{ movie.title }} Poster">
-        <div *ngIf="!movie.poster_path" class="no-poster-placeholder">
-          <span>Poster Bulunamadı</span>
+    <a [routerLink]="['/']" class="back-link">
+        <i class="fas fa-arrow-left"></i> Geri Dön
+    </a>
+
+    <div *ngIf="movie; else loading">
+        <div class="detail-header-section">
+            <div class="poster-container">
+                <img *ngIf="movie.poster_path" 
+                     [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" 
+                     alt="{{ movie.title }} Poster">
+                <div *ngIf="!movie.poster_path" class="no-poster-placeholder">
+                    <span>Poster Bulunamadı</span>
+                </div>
+            </div>
+            
+            <div class="info-container">
+                <h1>{{ movie.title }}</h1>
+                <p class="release-date">Çıkış Tarihi: {{ movie.release_date }}</p>
+                <p class="overview-title">Özet</p>
+                <p>{{ movie.overview }}</p>
+            </div>
         </div>
-      </div>
-      
-      <div class="info-container">
-        <h1>{{ movie.title }}</h1>
-        <p><strong>Çıkış Tarihi:</strong> {{ movie.release_date }}</p>
-        <p class="overview-title">Özet</p>
-        <p>{{ movie.overview }}</p>
-      </div>
     </div>
-  </div>
-  
-  <ng-template #loading>
-    <p class="loading-text">Film yükleniyor veya bulunamadı...</p>
-  </ng-template>
-  
+
+    <div class="cast-section" *ngIf="cast && cast.length > 0">
+        <h2 class="cast-title">Oyuncu Kadrosu</h2>
+        <div class="cast-container">
+            <div *ngFor="let member of cast" class="cast-member-card">
+               <a [routerLink]="['/person', member.id]">
+                 <img *ngIf="member.profile_path" 
+                      [src]="'https://image.tmdb.org/t/p/w200' + member.profile_path" 
+                      alt="{{ member.name }} Profil Fotoğrafı">
+                 <div *ngIf="!member.profile_path" class="no-profile-placeholder">
+                     <span>Fotoğraf Yok</span>
+                 </div>
+               </a>
+                <p class="actor-name">{{ member.name }}</p>
+                <p class="character-name">{{ member.character }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <ng-template #loading>
+        <p class="loading-text">Film yükleniyor veya bulunamadı...</p>
+    </ng-template>
 </div>

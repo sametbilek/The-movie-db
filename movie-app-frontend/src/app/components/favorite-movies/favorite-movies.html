@@ -1,7 +1,11 @@
-<h1>Popüler Filmler</h1>
+<h1>Favori Filmlerim</h1>
 
-<div class="movie-grid-container">
-  <div *ngFor="let movie of movies" class="movie-card">
+<div *ngIf="loading">
+  <p class="loading-text">Favori filmler yükleniyor...</p>
+</div>
+
+<div *ngIf="!loading && favoriteMovies.length > 0" class="movie-grid-container">
+  <div *ngFor="let movie of favoriteMovies" class="movie-card">
     <a [routerLink]="['/movie', movie.id]">
       <img *ngIf="movie.poster_path" 
            [src]="'https://image.tmdb.org/t/p/w300' + movie.poster_path" 
@@ -13,22 +17,10 @@
     <div class="movie-info">
       <h2><a [routerLink]="['/movie', movie.id]">{{ movie.title }}</a></h2>
       <p class="release-date">({{ movie.release_date?.substring(0, 4) }})</p>
-      <span class="favorite-icon" (click)="toggleFavorite(movie.id)">
-    {{ isFavorite(movie.id) ? '❤️' : '🤍' }}
-  </span>
     </div>
   </div>
 </div>
 
-<div *ngIf="loading" class="loading-spinner">
-  <div class="spinner"></div>
-  <p>Filmler yükleniyor...</p>
+<div *ngIf="!loading && favoriteMovies.length === 0">
+  <p class="no-favorites-message">Henüz favori filminiz yok.</p>
 </div>
-
-<div *ngIf="!loading && !hasMorePages" class="end-of-list">
-  <p>Tüm filmler yüklendi.</p>
-</div>
-
-<ng-template #noMovies>
-  <p>Film bulunamadı.</p>
-</ng-template>

@@ -1,1 +1,12 @@
-<router-outlet></router-outlet>
+<nav class="navbar">
+  <div class="container">
+    <a routerLink="/" class="navbar-brand">TMDB Uygulaması</a>
+    <div class="navbar-links">
+      <a routerLink="/">Popüler Filmler</a>
+      <a routerLink="/favorites">Favorilerim</a>
+    </div>
+  </div>
+</nav>
+<div class="main-content">
+  <router-outlet></router-outlet>
+</div>

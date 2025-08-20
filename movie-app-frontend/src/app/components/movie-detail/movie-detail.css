@@ -1,79 +1,194 @@
-.movie-detail-container {
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 30px;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+/* Genel Ayarlar ve Sayfa Arka Planı */
+body {
+    font-family: 'Poppins', sans-serif; /* Google Fonts'tan modern bir font */
+    background-color: #f0f2f5; /* Çok hafif, modern bir gri arka plan */
+    margin: 0;
+    padding: 0;
+    color: #333;
 }
 
+/* Ana Konteyner */
+.movie-detail-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff; /* Beyaz bir kart efekti */
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08); /* Daha yumuşak, belirgin bir gölge */
+    transition: all 0.3s ease;
+}
+
+/* Geri Dön Butonu */
 .back-link {
-  display: inline-block;
-  margin-bottom: 20px;
-  text-decoration: none;
-  background-color: #3498db;
-  color: #fff;
-  padding: 10px 15px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 25px;
+    text-decoration: none;
+    background-color: #3498db;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .back-link:hover {
-  background-color: #2980b9;
+    background-color: #2980b9;
+    transform: translateY(-2px);
 }
 
+/* Film Bilgileri Bölümü */
 .detail-header-section {
-  display: flex;
-  gap: 40px;
-  align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap; /* Küçük ekranlarda alta geçmesi için */
+    gap: 40px;
+    align-items: flex-start;
 }
 
 .poster-container img {
-  width: 300px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Daha derin bir poster gölgesi */
 }
 
 .no-poster-placeholder {
-  width: 300px;
-  height: 450px;
-  background-color: #e0e0e0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #777;
-  border-radius: 10px;
+    width: 300px;
+    height: 450px;
+    background-color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #777;
+    border-radius: 10px;
+    font-size: 1.2em;
 }
 
 .info-container {
-  flex-grow: 1;
-  padding-top: 20px;
+    flex: 1; /* Esnek büyüme */
+    padding-top: 20px;
 }
 
 .info-container h1 {
-  font-size: 2.8em;
-  margin-top: 0;
-  color: #2c3e50;
-  line-height: 1.2;
+    font-size: 3em; /* Daha büyük ve etkileyici başlık */
+    margin-top: 0;
+    color: #2c3e50;
+    line-height: 1.2;
+    font-weight: 700;
 }
 
 .info-container p {
-  font-size: 1.1em;
-  color: #555;
-  line-height: 1.6;
+    font-size: 1.1em;
+    color: #555;
+    line-height: 1.6;
+}
+
+.release-date {
+    font-size: 1.2em;
+    color: #7f8c8d;
+    font-weight: 500;
+    margin-top: -10px;
 }
 
 .overview-title {
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #2c3e50;
-  margin-top: 25px;
-  margin-bottom: 10px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #e74c3c; /* Kırmızı çizgi ile vurgu */
+    display: inline-block;
+    padding-bottom: 5px;
 }
 
 .loading-text {
-  text-align: center;
-  font-size: 1.2em;
-  color: #777;
-  margin-top: 50px;
+    text-align: center;
+    font-size: 1.2em;
+    color: #777;
+    margin-top: 50px;
+}
+
+/* Oyuncu Kadrosu Bölümü */
+.cast-section {
+    margin-top: 50px;
+}
+
+.cast-title {
+    font-size: 2.2em;
+    color: #2c3e50; /* Koyu başlık rengi */
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-align: center; /* Başlığı ortala */
+}
+
+.cast-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px; /* Daha geniş boşluk */
+    padding-bottom: 20px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #95a5a6 transparent;
+}
+
+/* Yatay kaydırma çubuğunu gizle (isteğe bağlı) */
+.cast-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.cast-container::-webkit-scrollbar-thumb {
+    background-color: #bdc3c7;
+    border-radius: 10px;
+}
+
+.cast-container::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+/* Oyuncu Kartı */
+.cast-member-card {
+    flex-shrink: 0;
+    width: 160px; /* Biraz daha geniş kart */
+    text-align: center;
+    background-color: #f8f9fa; /* Açık arka plan rengi */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cast-member-card:hover {
+    transform: translateY(-8px); /* Üzerine gelince belirgin bir kalkış efekti */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.cast-member-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px 12px 0 0;
+}
+
+.no-profile-placeholder {
+    width: 100%;
+    height: 240px; /* Görsel oranı için */
+    background-color: #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #666;
+    border-radius: 12px 12px 0 0;
+}
+
+.actor-name {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 15px 10px 5px;
+    color: #2c3e50;
+    line-height: 1.2;
+}
+
+.character-name {
+    font-size: 0.9em;
+    color: #7f8c8d;
+    margin: 0 10px 15px;
 }

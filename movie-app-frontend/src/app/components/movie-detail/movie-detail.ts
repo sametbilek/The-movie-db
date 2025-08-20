@@ -13,6 +13,8 @@ import { MovieApi } from '../../services/movie-api';
 export class MovieDetail implements OnInit {
   movie: any;
 
+  cast: any[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private movieApi: MovieApi
@@ -23,6 +25,10 @@ export class MovieDetail implements OnInit {
     if (id) {
       this.movieApi.getMovieDetails(+id).subscribe(response => {
         this.movie = response;
+
+      this.movieApi.getMovieCast(+id).subscribe(response => {
+        this.cast = response.cast;
+            });
 
         console.log("Response : " ,this.movie);
       });
