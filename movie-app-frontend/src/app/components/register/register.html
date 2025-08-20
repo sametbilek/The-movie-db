@@ -1,0 +1,16 @@
+<div class="auth-container">
+  <h2>Hesap Oluştur</h2>
+  <form (ngSubmit)="onRegister()">
+    <div class="form-group">
+      <label for="username">Kullanıcı Adı</label>
+      <input type="text" id="username" name="username" [(ngModel)]="user.username" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Şifre</label>
+      <input type="password" id="password" name="password" [(ngModel)]="user.password" required>
+    </div>
+    <button type="submit">Kayıt Ol</button>
+  </form>
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+  <p>Zaten hesabın var mı? <a routerLink="/login">Giriş yap</a></p>
+</div>

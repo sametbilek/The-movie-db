@@ -1,12 +1,24 @@
 <nav class="navbar">
   <div class="container">
     <a routerLink="/" class="navbar-brand">TMDB Uygulaması</a>
+    
     <div class="navbar-links">
       <a routerLink="/">Popüler Filmler</a>
-      <a routerLink="/favorites">Favorilerim</a>
+      
+      <ng-container *ngIf="isLoggedIn">
+        <a routerLink="/favorites">Favorilerim</a>
+        <span>Merhaba, {{ authService.getUsername() }}</span>
+        <a (click)="onLogout()">Çıkış Yap</a>
+      </ng-container>
+
+      <ng-container *ngIf="!isLoggedIn">
+        <a routerLink="/login">Giriş Yap</a>
+        <a routerLink="/register">Kayıt Ol</a>
+      </ng-container>
     </div>
   </div>
 </nav>
+
 <div class="main-content">
   <router-outlet></router-outlet>
 </div>

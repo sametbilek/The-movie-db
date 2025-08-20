@@ -17,6 +17,10 @@
     <div class="movie-info">
       <h2><a [routerLink]="['/movie', movie.id]">{{ movie.title }}</a></h2>
       <p class="release-date">({{ movie.release_date?.substring(0, 4) }})</p>
+      
+      <span class="favorite-icon" (click)="toggleFavorite(movie.id)">
+        {{ isFavorite(movie.id) ? '❤️' : '🤍' }}
+      </span>
     </div>
   </div>
 </div>

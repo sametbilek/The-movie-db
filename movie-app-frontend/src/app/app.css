@@ -35,3 +35,16 @@
 .main-content {
   padding-top: 0;
 }
+.navbar-links a {
+  color: #e0e0e0;
+  text-decoration: none;
+  margin-left: 25px;
+  font-size: 1em;
+  transition: color 0.3s ease;
+  cursor: pointer; /* Çıkış yap butonu için */
+}
+.navbar-links span {
+  color: #3498db;
+  font-weight: bold;
+  margin-left: 25px;
+}

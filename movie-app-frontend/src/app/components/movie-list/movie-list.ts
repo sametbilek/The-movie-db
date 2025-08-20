@@ -6,6 +6,8 @@ import { ViewportScroller } from '@angular/common'; // <-- Bu satırı ekleyin
 import { ScrollingModule } from '@angular/cdk/scrolling'; // Bu modülü import edin
 import { Subject ,fromEvent} from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { AuthService } from '../../services/auth.service'; // <-- AuthService'i içe aktar
+
 
 
 @Component({
@@ -30,15 +32,23 @@ export class MovieList implements OnInit,OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
 
-  constructor(private movieApi: MovieApi,
+  constructor(private movieApi: MovieApi,private authService: AuthService // <-- AuthService'i enjekte et
+
   ){}
 
    ngOnInit(): void {
-    this.getFavoriteMovies();
-
+    this.authService.isLoggedIn$.subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        this.getFavoriteMovies();
+      } else {
+        this.favoriteMovieIds = []; // Çıkış yapıldığında favorileri temizle
+      }
+    });
     this.loadMovies();
     this.setupInfiniteScroll();
   }
+
+
    ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -73,24 +83,43 @@ setupInfiniteScroll(): void {
         }
       });
   }
-   getFavoriteMovies(): void {
-    this.movieApi.getFavoriteMovieIds().subscribe(ids => {
-      this.favoriteMovieIds = ids;
-    });
+  getFavoriteMovies(): void {
+    // Sadece kullanıcı kimlik doğrulaması yapmışsa abone ol
+    if (this.authService.isLoggedIn()) {
+      this.movieApi.getFavoriteMovieIds().subscribe(
+        (ids: number[]) => {
+          this.favoriteMovieIds = ids;
+        },
+        (error: any) => {
+          console.error('Favoriler yüklenemedi', error);
+          this.favoriteMovieIds = [];
+        }
+      );
+    } else {
+      // Giriş yapılmadıysa listeyi boşalt
+      this.favoriteMovieIds = [];
+    }
   }
+
 
   isFavorite(movieId: number): boolean {
     return this.favoriteMovieIds.includes(movieId);
   }
 
   toggleFavorite(movieId: number): void {
+    if (!this.authService.isLoggedIn()) {
+      // Kullanıcıya bir mesaj gösterebilirsiniz
+      alert('Favorilere eklemek için lütfen giriş yapın.');
+      return;
+    }
+
     if (this.isFavorite(movieId)) {
       this.movieApi.removeFavorite(movieId).subscribe(() => {
-        this.getFavoriteMovies(); // Listeyi yeniden çek
+        this.getFavoriteMovies();
       });
     } else {
       this.movieApi.addFavorite(movieId).subscribe(() => {
-        this.getFavoriteMovies(); // Listeyi yeniden çek
+        this.getFavoriteMovies();
       });
     }
   }

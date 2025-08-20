@@ -15,4 +15,6 @@ public class FavoriteMovie {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long movieId;
+    private Long userId; // <-- Kullanıcı ID'sini tutacak yeni alan
+
 }

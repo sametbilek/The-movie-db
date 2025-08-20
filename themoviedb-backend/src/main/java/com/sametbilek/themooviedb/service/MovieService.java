@@ -2,7 +2,10 @@ package com.sametbilek.themooviedb.service;
 
 
 import com.sametbilek.themooviedb.model.*;
+import com.sametbilek.themooviedb.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import com.sametbilek.themooviedb.repository.FavoriteMovieRepository;
@@ -22,6 +25,16 @@ public class MovieService {
     private final RestTemplate restTemplate = new RestTemplate();
     @Autowired
     private FavoriteMovieRepository favoriteMovieRepository;
+    @Autowired // <-- Bu satırı ekleyin
+    private UserRepository userRepository;
+
+    private Long getUserId() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // Burası, UserDetails'ten kullanıcı ID'sini alacak bir mantık gerektirir.
+        // Basit bir yöntem: `findByUsername` ile kullanıcıyı bulup ID'sini alın.
+        User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getId();
+    }
 
     public MovieListResponse getPopularMovies(int page) {
         String url = String.format("%s/movie/popular?api_key=%s&page=%d", BASE_URL, apiKey, page);
@@ -41,24 +54,29 @@ public class MovieService {
         return restTemplate.getForObject(url, Person.class);
     }
     public void addFavorite(Long movieId) {
-        if (!favoriteMovieRepository.existsByMovieId(movieId)) {
+        Long userId = getUserId();
+        if (!favoriteMovieRepository.existsByMovieIdAndUserId(movieId, userId)) {
             FavoriteMovie favorite = new FavoriteMovie();
             favorite.setMovieId(movieId);
+            favorite.setUserId(userId);
             favoriteMovieRepository.save(favorite);
         }
     }
 
     @Transactional
     public void removeFavorite(Long movieId) {
-        favoriteMovieRepository.deleteByMovieId(movieId);
+        Long userId = getUserId();
+        favoriteMovieRepository.deleteByMovieIdAndUserId(movieId, userId);
     }
 
     public boolean isFavorite(Long movieId) {
-        return favoriteMovieRepository.existsByMovieId(movieId);
+        Long userId = getUserId();
+        return favoriteMovieRepository.existsByMovieIdAndUserId(movieId, userId);
     }
 
     public List<Long> getFavoriteMovieIds() {
-        return favoriteMovieRepository.findAll().stream()
+        Long userId = getUserId();
+        return favoriteMovieRepository.findByUserId(userId).stream()
                 .map(FavoriteMovie::getMovieId)
                 .collect(Collectors.toList());
     }
